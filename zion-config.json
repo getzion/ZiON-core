@@ -1,0 +1,16 @@
+{
+  "paths" : {
+    "src" : {
+      "root" : "src",
+      "fonts": "fonts",
+      "images": "images",
+      "pug": "pug",
+      "js": "js",
+      "scss": "scss"
+    },
+    "dist" : {
+
+    },
+    "rtl" : true
+  }
+}
