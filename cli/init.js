@@ -31,5 +31,29 @@ InitRegistry.prototype.init = function(gulp) {
             console.log('📁  folder created:', dir);
     });
   });
+
+  gulp.task('init:copyDependencies', () => {
+    let dependencies = JSON.parse(fs.readFileSync('./zion-config.json')).copyDependencies;
+    console.log(dependencies);
+
+    const promises = Object.keys(dependencies).map(function (item) {
+      return new Promise(function (resolve, reject) {
+        gulp.src(dependencies[item].from)
+          .pipe(gulp.dest(dependencies[item].to))
+          .on('end', function (err) {
+            if (err) {
+              console.log(err)
+              reject(err);
+            } else {
+              resolve();
+            }
+          });
+      });
+    });
+    return Promise.all(promises);
+
+  });
+
+
 }
 module.exports = new InitRegistry();

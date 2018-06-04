@@ -77,6 +77,7 @@ DevRegistry.prototype.init = function(gulp) {
     done();
   });
 
+  // Todo: make dynamic and do with promise
   gulp.task('dev:assets', ()=>{
     const tasks = ['videos', 'fonts', 'lib', 'lang'].map(function(folder) {
         return gulp.src('./src/'+folder+'/**/*.*')
@@ -84,6 +85,7 @@ DevRegistry.prototype.init = function(gulp) {
       });
     return merge(tasks);
   });
+
   gulp.task('dev:images', ()=>{
     return gulp.src('./src/images/**/{*.jpg,*.png,*.gif,*.ico,*.svg}')
         // .pipe(watch('./images/**/{*.jpg,*.png,*.gif,*.ico,*.svg}'))

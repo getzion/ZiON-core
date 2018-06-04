@@ -17,9 +17,10 @@ gitRegistry.prototype.init = (gulp) => {
 
   // Run git commit
   // src are the files to commit (or ./*)
-  gulp.task('git:commit', ()=>{
-    let commitMessage = argv.m || "Life is too to write a commit message!";
+  gulp.task('git:commit', () => {
+    let commitMessage = argv.m || 'Life is too to write a commit message!';
     return gulp.src('./')
+      .pipe(git.add())
       .pipe(git.commit(commitMessage));
 
   });
@@ -27,7 +28,7 @@ gitRegistry.prototype.init = (gulp) => {
   // Run git push
   // remote is the remote repo
   // branch is the remote branch to push to
-  gulp.task('git:push', ()=>{
+  gulp.task('git:push', () => {
     git.push('origin', 'master', function (err) {
       if (err) throw err;
     });
