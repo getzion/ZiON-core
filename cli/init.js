@@ -33,13 +33,12 @@ InitRegistry.prototype.init = function(gulp) {
   });
 
   gulp.task('init:copyDependencies', () => {
-    let dependencies = JSON.parse(fs.readFileSync('./zion-config.json')).copyDependencies;
-    console.log(dependencies);
+    let items = JSON.parse(fs.readFileSync('./zi on-config.json')).copy;
 
-    const promises = Object.keys(dependencies).map(function (item) {
-      return new Promise(function (resolve, reject) {
-        gulp.src(dependencies[item].from)
-          .pipe(gulp.dest(dependencies[item].to))
+    const promise = items.map(function(item){
+      return new Promise((resolve, reject) => {
+        gulp.src(item.from)
+          .pipe(gulp.dest(item.to))
           .on('end', function (err) {
             if (err) {
               console.log(err)
@@ -48,9 +47,9 @@ InitRegistry.prototype.init = function(gulp) {
               resolve();
             }
           });
-      });
+        });
     });
-    return Promise.all(promises);
+    return Promise.all(promise);
 
   });
 
