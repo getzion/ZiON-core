@@ -1,3 +1,6 @@
+// Todo: Update all paths
+
+
 "use strict";
 
 const path = require('path');
@@ -5,6 +8,8 @@ const gulp = require('gulp');
 const fs   = require('fs');
 const util = require('util');
 const registry = require('undertaker-registry');
+const zionconfig = require('../zionconfig');
+const colors = require('colors');
 
 
 function InitRegistry() {
@@ -12,17 +17,18 @@ function InitRegistry() {
 }
 util.inherits(InitRegistry, registry);
 
+
+
 InitRegistry.prototype.init = function(gulp) {
-  gulp.task('init:folders', ()=>{
-    //Todo: make folders dynamically
+
+  gulp.task('init:scaffold', (done) => {
+
     const folders = [
-      'src',
-      'src/fonts',
-      'src/images',
-      'src/js',
-      'src/pug',
-      'src/scss',
-      'src/lib'
+      zionconfig.src.root,
+      `${zionconfig.src.images}`,
+      `${zionconfig.src.js}`,
+      `${zionconfig.src.pug}`,
+      `${zionconfig.src.scss}`
     ];
 
     folders.forEach(dir => {
@@ -30,20 +36,60 @@ InitRegistry.prototype.init = function(gulp) {
             fs.mkdirSync(dir),
             console.log('📁  folder created:', dir);
     });
+
+    done();
   });
 
-  gulp.task('init:copyDependencies', () => {
-    let items = JSON.parse(fs.readFileSync('./zi on-config.json')).copy;
+
+
+  gulp.task('init:copy', done => {
+    zionconfig.copy || (zionconfig.copy = []);
+
+    let items = [...zionconfig.copy, ...[
+      {
+        from: path.resolve(__dirname+'/../.gitignore'),
+        to: './'
+      },
+      {
+        from: path.resolve(`node_modules/zion/${zionconfig.src.images}/**/*.*`),
+        to: zionconfig.src.images
+      },
+      {
+        from: path.resolve(`node_modules/zion/${zionconfig.src.pug}/**/*.*`),
+        to: zionconfig.src.pug
+      },
+      {
+        from: path.resolve(`node_modules/zion/${zionconfig.src.js}/**/*.*`),
+        to: zionconfig.src.js
+      },
+      {
+        from: path.resolve(`node_modules/zion/${zionconfig.src.scss}/style.scss`),
+        to: zionconfig.src.scss
+      },
+    ]];
+
+    
+    console.log(`Coping items...`);
+
+    // Todo: force overwrite
 
     const promise = items.map(function(item){
       return new Promise((resolve, reject) => {
-        gulp.src(item.from)
+        
+        // if(fs.existsSync(item.to)){
+        //   console.log(`⚠️  File already exists. Can not copy from: ${item.from}`.yellow);
+        //   resolve();
+        //   return;
+        // }
+
+        gulp.src(item.from, {overwrite:false})
           .pipe(gulp.dest(item.to))
-          .on('end', function (err) {
+          .on('end', err => {
             if (err) {
               console.log(err)
               reject(err);
             } else {
+              console.log(`✅  ${item.from}`)
               resolve();
             }
           });
@@ -52,6 +98,11 @@ InitRegistry.prototype.init = function(gulp) {
     return Promise.all(promise);
 
   });
+
+
+
+
+  gulp.task('init', gulp.parallel('init:scaffold', 'init:copy'));
 
 
 }

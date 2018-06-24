@@ -38,7 +38,7 @@ util.inherits(DistRegistry, registry);
 DistRegistry.prototype.init = function(gulp) {
 
   gulp.task('dist:scss', ()=>{
-    return gulp.src('./src/scss/style.scss')
+    return gulp.src('./src/scss/**/*.scss')
         // Todo: Add preprocessor for ZION_ENV in SCSS
         // .pipe(preprocess({context: { ZION_ENV : 'PRODUCTION'}}))
       .pipe(plumber())
@@ -68,27 +68,27 @@ DistRegistry.prototype.init = function(gulp) {
   });
 
   gulp.task('dist:js', () => {
-    return gulp.src('./src/js/**/*.js')// no need of reading file because browserify does.
-   //  .pipe(plumber())
-   //  // transform file objects using gulp-tap plugin
-   //  .pipe(tap(function (file) {
-   //    // console.log('bundling ' + file.path);
-   //    // replace file contents with browserify's bundle stream
-   //    file.contents = browserify(file.path, {debug: false}).bundle();
-   //  }))
-   //  // transform streaming contents into buffer contents (because gulp-sourcemaps does not support streaming contents)
-   // .pipe(buffer())
-   // .pipe(plumber.stop())
-   .pipe(include({
-     extensions: 'js',
-      // hardFail: true,
-      includePaths: [
-        'node_modules'
-      ]
-    }))
-   .pipe(gulp.dest('./dist/js'));
+    return gulp.src('./src/js/**/*.js')
+      .pipe(include({
+       extensions: 'js',
+        // hardFail: true,
+        includePaths: [
+          'node_modules'
+        ]
+      }))
+      .pipe(gulp.dest('./dist/js'));
+  });
 
-  })
+  gulp.task('dist:images', () => {
+    return gulp.src('./src/images/**/*.*')
+      .pipe(gulp.dest('./dist/images'));
+  });
+
+  gulp.task('dist:images:blur', (done) => {
+    //Todo: Blur selected images in the dist, read from zion-congit.json
+    done();
+  });
+
 
 }
 module.exports = new DistRegistry();

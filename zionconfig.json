@@ -1,0 +1,28 @@
+{
+  "src" : {
+    "root" : ".",
+    "fonts": "./fonts",
+    "images": "./images",
+    "pug": "./pug",
+    "js": "./js",
+    "scss": "./scss",
+    "lib": "./lib"
+  },
+  "dist" : {
+    "root": "./dist",
+    "fonts": "./dist/fonts",
+    "images": "./dist/images",
+    "js": "./dist/js",
+    "css": "./dist/css",
+    "lib": "./dist/lib"
+  },
+  "temp" : {
+    "root": "./temp",
+    "fonts": "./temp/fonts",
+    "images": "./temp/images",
+    "js": "./temp/js",
+    "css": "./temp/css",
+    "lib": "./temp/lib"
+  },
+  "rtl" : true
+}

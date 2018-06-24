@@ -1,0 +1,46 @@
+.background {
+  position: absolute;
+  width: 100%;
+  min-height: 100%;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  will-change: transform, opacity, filter;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  background-repeat: no-repeat;
+}
+
+.background.background-fixed {
+  background-attachment: fixed;
+}
+
+.background.background-right {
+  left: auto;
+  right: 0;
+}
+
+.background.overlay:before {
+  position: absolute;
+  content: '';
+  background: rgba(0, 0, 0, 0.25);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.background video {
+  position: absolute;
+  display: block;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  -o-object-fit: cover;
+  object-fit: cover;
+  height: 100%;
+  min-width: 100%;
+}

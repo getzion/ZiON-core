@@ -1,5 +1,8 @@
 "use strict";
 
+// Making error reporting beautiful
+require('pretty-error').start();
+
 const glob = require('glob');
 const path = require('path');
 const Liftoff = require('liftoff');
@@ -91,4 +94,10 @@ let run = ()=>{
     handleArguments
   );
 }
+
+// Catching all those nasty errors
+process.on('uncaughtException', (error) =>{
+  console.log(error)
+} )
+
 module.exports = run;
